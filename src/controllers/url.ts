@@ -21,3 +21,19 @@ export const handleGenerateNewShortURL = async (req: Request, res: Response, nex
   }
 }
 
+export const handleGetAnalytics = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const shortId = req.params.shortId;
+    if (!shortId) {
+      res.status(404).send({ error: "no short id found in params" })
+      return;
+    }
+    const entry = await URL.findOne({ shortId })
+    res.json({
+      totalClicks: entry?.visitHistory.length,
+      analytics: entry?.visitHistory,
+    });
+  } catch (err) {
+    next(err);
+  }
+}
