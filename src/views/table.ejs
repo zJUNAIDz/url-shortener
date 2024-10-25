@@ -1,0 +1,23 @@
+<table border="1">
+  <thead>
+    <th colspan="3">Short URL database</th>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Short URL</th>
+      <th>Redirect URL</th>
+      <th>Visit count</th>
+    </tr>
+    <% urls.forEach(url => { %>
+    <tr>
+      <td>
+        <a target="_blank" href="http://localhost:8000/<%= url.shortId %>">
+          https://localhost:8000/<%= url.shortId %>
+        </a>
+      </td>
+      <td><%= url.redirectUrl %></td>
+      <td><%= url.visitHistory.length %></td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>
