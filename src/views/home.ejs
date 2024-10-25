@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./home.css" />
+    <title>URL Shortener</title>
+  </head>
+  <body>
+    <main>
+      <h3>Generate your own Short url</h3>
+      <form method="POST" action="/url">
+        <input type="text" name="url" id="url" />
+        <button id="btn" type="submit">Generate</button>
+      </form>
+      <span id="result-span">
+        <% if (locals.currUrlId) { %> http://localhost:8000/url/<%= currUrlId %>
+        <%} %>
+      </span>
+    </main>
+  </body>
+</html>
