@@ -4,9 +4,11 @@ import URL from "../models/url"
 export const handleGenerateNewShortURL = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const body = req.body;
-    if (!body?.url) return res.status(400).send({ error: "Redirect url is required" })
+    if (!body?.url || body.url.trim() == "") {
+      throw new Error("invalid url");
+    }
 
-    const { nanoid } = await import("nanoid")
+    const { nanoid } = await import("nanoid");
     const shortId = nanoid(4);
     // @ts-ignore
     const newUrl = await URL({
@@ -15,9 +17,15 @@ export const handleGenerateNewShortURL = async (req: Request, res: Response, nex
       visitHistory: [],
     });
     const shortenedUrl = await newUrl.save();
-    res.send({ shortenedUrl })
-  } catch (err) {
-    next(err)
+
+    const urlList = await URL.find({});
+    res.render("home", { id: shortId, urls: urlList })
+
+  } catch (err: any) {
+    if (err.message == "invalid url") {
+      res.redirect("/");
+    }
+    next(err);
   }
 }
 
